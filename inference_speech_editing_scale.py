@@ -1,9 +1,13 @@
 import argparse, pickle
 import logging
 import os, random
+import sys
+
 import numpy as np
 import torch
 import torchaudio
+
+print('sys.path:', sys.path)
 
 from data.tokenizer import (
     AudioTokenizer,
