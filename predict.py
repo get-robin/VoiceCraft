@@ -197,6 +197,12 @@ class Predictor(BasePredictor):
         seed: int = Input(
             description="Random seed. Leave blank to randomize the seed", default=None
         ),
+            start: float = Input(
+                description="Start time of token to replace in seconds", default=None
+            ),
+            end: float = Input(
+                description="End time of token to replace in seconds", default=None
+            ),
     ) -> ModelOutput:
         """Run a single prediction on the model"""
 
@@ -229,6 +235,7 @@ class Predictor(BasePredictor):
         audio_fn = str(orig_audio)
 
         info = torchaudio.info(audio_fn)
+        print(vars(info))
         audio_dur = info.num_frames / info.sample_rate
 
         # hyperparameters for inference
@@ -271,7 +278,7 @@ class Predictor(BasePredictor):
             start, end = get_mask_interval_from_word_bounds(
                 state["word_bounds"], orig_span_save, edit_type
             )
-
+            print(f"start: {start}, end: {end}")
             # span in codec frames
             morphed_span = (
                 max(start - left_margin, 1 / codec_sr),
